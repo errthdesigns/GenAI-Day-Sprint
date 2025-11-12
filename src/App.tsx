@@ -82,7 +82,7 @@ function App() {
     // Clear uploaded files after submission
     setUploadedFiles([]);
     
-    // Show confetti immediately (reaction happens after confetti now)
+    // Show confetti immediately
     setViewState('confetti');
   }, [currentTimeElapsed, userName, currentBrief, teamNames, uploadedFiles]);
 
@@ -181,12 +181,12 @@ function App() {
   }, [userName, currentTimeElapsed, currentBrief, uploadedFiles]);
 
   const handleConfettiComplete = useCallback(() => {
-    // After confetti, go straight to feedback (skip reaction overlay)
+    // After confetti, go straight to feedback brief (NO REACTION SCREEN)
     const minutes = Math.floor(submissionTime / 60);
     const seconds = submissionTime % 60;
     const timeString = `${minutes}:${String(seconds).padStart(2, '0')}`;
     
-    // Show result toast (using a default 'grin' reaction for the message)
+    // Show result toast
     toast.success(`Good job! Completed in ${timeString}`, {
       description: 'Loading next brief...'
     });
@@ -196,7 +196,7 @@ function App() {
     // Clear uploaded files for next submission
     setUploadedFiles([]);
     
-    // Load the next feedback brief and show it
+    // Load the next feedback brief and show it immediately
     setCurrentBrief(getRandomFeedbackBrief(currentBrief.id));
     setViewState('brief');
     setAppState('pre-start');
