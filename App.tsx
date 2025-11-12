@@ -7,7 +7,6 @@ import { SubmitView } from './components/SubmitView';
 import { EnterNamesView } from './components/EnterNamesView';
 import { ConfettiScreen } from './components/ConfettiScreen';
 import { TimeoutScreen } from './components/TimeoutScreen';
-import { ReactionOverlay } from './components/ReactionOverlay';
 import { SubmitDialog } from './components/SubmitDialog';
 import { HelpDialog } from './components/HelpDialog';
 import { RepellingHelpButton } from './components/RepellingHelpButton';
@@ -182,9 +181,26 @@ function App() {
   }, [userName, currentTimeElapsed, currentBrief, uploadedFiles]);
 
   const handleConfettiComplete = useCallback(() => {
-    // After confetti, show reaction
-    setAppState('reaction');
-  }, []);
+    // After confetti, go straight to feedback (skip reaction overlay)
+    const minutes = Math.floor(submissionTime / 60);
+    const seconds = submissionTime % 60;
+    const timeString = `${minutes}:${String(seconds).padStart(2, '0')}`;
+    
+    // Show result toast (using a default 'grin' reaction for the message)
+    toast.success(`Good job! Completed in ${timeString}`, {
+      description: 'Loading next brief...'
+    });
+
+    setAppState('result');
+    setCurrentTimeElapsed(0);
+    // Clear uploaded files for next submission
+    setUploadedFiles([]);
+    
+    // Load the next feedback brief and show it
+    setCurrentBrief(getRandomFeedbackBrief(currentBrief.id));
+    setViewState('brief');
+    setAppState('pre-start');
+  }, [submissionTime, currentBrief.id]);
 
   return (
     <div className="bg-neutral-300 relative h-screen w-screen overflow-hidden">
@@ -336,13 +352,6 @@ function App() {
         onOpenChange={setShowHelpDialog}
       />
 
-      {/* Reaction overlay */}
-      {appState === 'reaction' && (
-        <ReactionOverlay
-          timeElapsed={submissionTime}
-          onComplete={handleReactionComplete}
-        />
-      )}
 
       <Toaster />
     </div>
