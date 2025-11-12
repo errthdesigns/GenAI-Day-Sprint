@@ -181,7 +181,7 @@ function App() {
   }, [userName, currentTimeElapsed, currentBrief, uploadedFiles]);
 
   const handleConfettiComplete = useCallback(() => {
-    // After confetti, go straight to feedback brief (NO REACTION SCREEN)
+    // After confetti, go straight to feedback brief - NO REACTION SCREEN
     const minutes = Math.floor(submissionTime / 60);
     const seconds = submissionTime % 60;
     const timeString = `${minutes}:${String(seconds).padStart(2, '0')}`;
