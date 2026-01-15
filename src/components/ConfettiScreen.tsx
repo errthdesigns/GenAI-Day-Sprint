@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 function CelebrationConfetti() {
@@ -121,17 +121,52 @@ interface ConfettiScreenProps {
 
 export function ConfettiScreen({ onComplete }: ConfettiScreenProps) {
   const [phase, setPhase] = useState<'celebration' | 'feedback'>('celebration');
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Function to play a sighing sound effect using Web Audio API
+  const playSighSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const gainNode = audioContext.createGain();
+      gainNode.connect(audioContext.destination);
+
+      // Create multiple voices for a group sigh effect
+      const frequencies = [220, 185, 165]; // Multiple people sighing at different pitches
+      const duration = 1.5;
+
+      frequencies.forEach((startFreq, index) => {
+        const oscillator = audioContext.createOscillator();
+        const voiceGain = audioContext.createGain();
+
+        oscillator.connect(voiceGain);
+        voiceGain.connect(gainNode);
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(startFreq, audioContext.currentTime);
+        // Descending pitch for sigh effect
+        oscillator.frequency.exponentialRampToValueAtTime(startFreq * 0.6, audioContext.currentTime + duration);
+
+        // Volume envelope for sigh (fade in, then fade out)
+        voiceGain.gain.setValueAtTime(0, audioContext.currentTime);
+        voiceGain.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.1);
+        voiceGain.gain.linearRampToValueAtTime(0.12, audioContext.currentTime + duration * 0.5);
+        voiceGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + duration);
+
+        oscillator.start(audioContext.currentTime + (index * 0.05));
+        oscillator.stop(audioContext.currentTime + duration + 0.1);
+      });
+
+    } catch (err) {
+      console.log('Audio play failed:', err);
+    }
+  };
 
   useEffect(() => {
     // After 7 seconds, transition to feedback phase
     const feedbackTimer = setTimeout(() => {
       setPhase('feedback');
-      
-      // Play "ohhhh" sound effect
-      if (audioRef.current) {
-        audioRef.current.play().catch(err => console.log('Audio play failed:', err));
-      }
+
+      // Play sighing sound effect
+      playSighSound();
 
       // Transition to feedback view after 4 seconds
       setTimeout(() => {
@@ -146,12 +181,6 @@ export function ConfettiScreen({ onComplete }: ConfettiScreenProps) {
 
   return (
     <div className="bg-neutral-300 relative size-full overflow-hidden">
-      {/* Hidden audio element for sound effect */}
-      <audio 
-        ref={audioRef} 
-        src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGnuLyu2sgBjGJ0fPTgjMGHm7A7+OZWQ8MU6nn77BfGwc0jdXyzH0pBSd5yO/ekEAKFF607OyrWBMMSKDj8bllHAY2jtXz0oI0Bh5uv+/inFoODVOp5++wXxwHM43U88p8KAUneMfu3I9ACRRctuvrrVkUC0ae4/K8ax8GNIzU8sx+KwUme8rx3pBBChVetuvrsVsVDEih5PK7bB0GM43U88t9KgUlesjv3I5AChZftO3rr10VDEmi5fK8bR4GNIzU88t9KwUlesjv3I5AChZftO3rr10VDEmi5fK8bR4GM43U88p9KQUlecjv3I5BChVetuvrrVkVC0ae4/K8ayAGNY7V89GCMwYebsDv4pxaDg1Tqef="
-      />
-      
       <AnimatePresence mode="wait">
         {phase === 'celebration' ? (
           <motion.div

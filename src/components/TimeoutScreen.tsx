@@ -8,7 +8,51 @@ interface TimeoutScreenProps {
 export function TimeoutScreen({ onStartAgain }: TimeoutScreenProps) {
   const [showFinal, setShowFinal] = useState(false);
 
+  // Function to play an alarm sound effect using Web Audio API
+  const playAlarmSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const gainNode = audioContext.createGain();
+      gainNode.connect(audioContext.destination);
+
+      // Create an urgent alarm sound with multiple beeps
+      const beepCount = 5;
+      const beepDuration = 0.15;
+      const beepGap = 0.1;
+      const frequency = 880; // A5 note, urgent and attention-grabbing
+
+      for (let i = 0; i < beepCount; i++) {
+        const oscillator = audioContext.createOscillator();
+        const beepGain = audioContext.createGain();
+
+        oscillator.connect(beepGain);
+        beepGain.connect(gainNode);
+
+        oscillator.type = 'square'; // Square wave for harsh alarm sound
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+        const startTime = audioContext.currentTime + (i * (beepDuration + beepGap));
+        const endTime = startTime + beepDuration;
+
+        // Sharp attack and release for alarm effect
+        beepGain.gain.setValueAtTime(0, startTime);
+        beepGain.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+        beepGain.gain.setValueAtTime(0.3, endTime - 0.01);
+        beepGain.gain.linearRampToValueAtTime(0, endTime);
+
+        oscillator.start(startTime);
+        oscillator.stop(endTime);
+      }
+
+    } catch (err) {
+      console.log('Alarm sound play failed:', err);
+    }
+  };
+
   useEffect(() => {
+    // Play alarm sound immediately when timeout occurs
+    playAlarmSound();
+
     // Show shake animation with dispersed buttons for 2 seconds
     const timer = setTimeout(() => {
       setShowFinal(true);
