@@ -139,9 +139,37 @@ function App() {
     // Store uploaded files (ensure it's always an array)
     console.log('handleDone called with files:', files.length);
     setUploadedFiles(files || []);
-    // Go to enter names view
-    setViewState('enter-names');
-  }, []);
+
+    // If we already have a userName (not first submission), skip the names entry and submit directly
+    if (userName) {
+      setSubmissionTime(currentTimeElapsed);
+      setSubmittedUrl('');
+      setAppState('submitting');
+
+      // Submit to Google Drive with existing userName and files
+      submitToGoogleDrive({
+        userName: userName,
+        briefId: currentBrief.id,
+        briefTitle: currentBrief.title || `Brief ${currentBrief.id}`,
+        submissionTime: currentTimeElapsed,
+        submissionUrl: '',
+        teamNames: teamNames,
+        timestamp: new Date().toISOString(),
+        files: (files && files.length > 0) ? files as any : undefined,
+      }).catch(error => {
+        console.error('Failed to submit to Google Drive:', error);
+      });
+
+      // Clear uploaded files after submission
+      setUploadedFiles([]);
+
+      // Show confetti immediately
+      setViewState('confetti');
+    } else {
+      // First submission - go to enter names view
+      setViewState('enter-names');
+    }
+  }, [userName, currentTimeElapsed, currentBrief, teamNames]);
 
   const handleNamesEntered = useCallback((submittedUserName: string, submittedTeamNames: string) => {
     // Store the username if this is first submission
