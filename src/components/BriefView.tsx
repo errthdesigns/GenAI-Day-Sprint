@@ -6,9 +6,10 @@ interface BriefViewProps {
   brief: Brief;
   onReadyToStart?: (ready: boolean) => void;
   showHeader?: boolean;
+  onClose?: () => void;
 }
 
-export function BriefView({ brief, onReadyToStart, showHeader = false }: BriefViewProps) {
+export function BriefView({ brief, onReadyToStart, showHeader = false, onClose }: BriefViewProps) {
   const [currentPage, setCurrentPage] = useState(0);
   
   // Check if this is a multi-page brief
@@ -52,12 +53,38 @@ export function BriefView({ brief, onReadyToStart, showHeader = false }: BriefVi
     <>
       {/* Mini header - shown when viewing brief during active timer */}
       {showHeader && (
-        <div className="absolute inset-[10.06%_83.96%_85.06%_7.5%]">
-          <div className="absolute inset-0 rounded-[100px]">
-            <div aria-hidden="true" className="absolute border-2 border-[#0000d5] border-solid inset-[-1px] pointer-events-none rounded-[101px]" />
+        <>
+          <div className="absolute inset-[10.06%_83.96%_85.06%_7.5%]">
+            <div className="absolute inset-0 rounded-[100px]">
+              <div aria-hidden="true" className="absolute border-2 border-[#0000d5] border-solid inset-[-1px] pointer-events-none rounded-[101px]" />
+            </div>
+            <p className="absolute bottom-[30%] font-['Droid_Sans:Bold',sans-serif] leading-[20px] left-0 not-italic right-0 text-[#0000d5] text-[14px] text-center top-[30%]">Brief</p>
           </div>
-          <p className="absolute bottom-[30%] font-['Droid_Sans:Bold',sans-serif] leading-[20px] left-0 not-italic right-0 text-[#0000d5] text-[14px] text-center top-[30%]">Brief</p>
-        </div>
+
+          {/* X close button - top right */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="absolute right-[108px] top-[10.06%] w-[40px] h-[40px] flex items-center justify-center cursor-pointer group"
+              aria-label="Close brief"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#0000d5"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="group-hover:opacity-70 transition-opacity"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          )}
+        </>
       )}
 
       {/* Brief content */}

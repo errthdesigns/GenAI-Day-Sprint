@@ -256,10 +256,11 @@ function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <BriefView 
-              brief={currentBrief} 
+            <BriefView
+              brief={currentBrief}
               onReadyToStart={setIsReadyToStart}
               showHeader={appState === 'active'}
+              onClose={appState === 'active' ? handleTimerClick : undefined}
             />
           </motion.div>
         )}
