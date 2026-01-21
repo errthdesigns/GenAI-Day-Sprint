@@ -311,7 +311,7 @@ function App() {
             // Pre-start state: show only "Brief" and "Start" buttons
             <>
               {/* Brief button in top left */}
-              <div className="absolute left-[7.5%] top-[10.06%]">
+              <div className="absolute left-[108px] top-[10.06%]">
                 <PillButton onClick={() => setViewState('brief')}>
                   Brief
                 </PillButton>
