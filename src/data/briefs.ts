@@ -81,17 +81,6 @@ export const feedbackBriefs: Brief[] = [
     ],
   },
   {
-    id: 5,
-    pages: [
-      {
-        content: ["Yey!", "", "The client loves it! They need a Facebook carousel to really make the campaign sing."],
-      },
-      {
-        content: outcomeContent,
-      },
-    ],
-  },
-  {
     id: 6,
     pages: [
       {
@@ -114,43 +103,10 @@ export const feedbackBriefs: Brief[] = [
     ],
   },
   {
-    id: 8,
-    pages: [
-      {
-        content: ["Yey!", "", "The client loves your idea! They would love to see a radio add that matches it!"],
-      },
-      {
-        content: outcomeContent,
-      },
-    ],
-  },
-  {
-    id: 9,
-    pages: [
-      {
-        content: ["Yey!", "", "The client loves your idea! But they need a 3 page strategic sell in for board. Please make a deck."],
-      },
-      {
-        content: outcomeContent,
-      },
-    ],
-  },
-  {
-    id: 10,
-    pages: [
-      {
-        content: ["Yey!", "", "The client loves your idea! And wants to make a 30\" ad that expands on the idea. Please storyboard it so they can approve!"],
-      },
-      {
-        content: outcomeContent,
-      },
-    ],
-  },
-  {
     id: 11,
     pages: [
       {
-        content: ["Yey!", "", "The client loves your idea! But could it be more innovative… Could it be a game?"],
+        content: ["Yey!", "", "The client loves your idea! But could it be more innovative… Surprise us!"],
       },
       {
         content: outcomeContent,
@@ -169,17 +125,6 @@ export const feedbackBriefs: Brief[] = [
     ],
   },
   {
-    id: 13,
-    pages: [
-      {
-        content: ["Oh No!", "", "The client loves the work. But it's off strategy. Can you re-write the brief so the strat matches the work."],
-      },
-      {
-        content: outcomeContent,
-      },
-    ],
-  },
-  {
     id: 14,
     pages: [
       {
@@ -191,10 +136,10 @@ export const feedbackBriefs: Brief[] = [
     ],
   },
   {
-    id: 15,
+    id: 16,
     pages: [
       {
-        content: ["Yey!", "", "The client loves it! Please write a LinkedIn Thought piece on the power of AI creation. So they can promote it on their page."],
+        content: ["Oh No!", "", "The client's Social was hacked! Please make 3 OOH instead. The headlines must be written with AI (as the client would like to show they are #AiFirst)"],
       },
       {
         content: outcomeContent,
@@ -202,10 +147,32 @@ export const feedbackBriefs: Brief[] = [
     ],
   },
   {
-    id: 16,
+    id: 17,
     pages: [
       {
-        content: ["Oh No!", "", "The client's Social was hacked! Please make 3 OOH instead. The headlines must be written with AI (as the client would like to show they are #AiFirst)"],
+        content: ["Oh No!", "", "An URGENT brief came in from Sohel! We need you to create an ad for LoveLace instead!"],
+      },
+      {
+        content: outcomeContent,
+      },
+    ],
+  },
+  {
+    id: 18,
+    pages: [
+      {
+        content: ["Yey!", "", "The client loves it. But could it be a bit more yellow?"],
+      },
+      {
+        content: outcomeContent,
+      },
+    ],
+  },
+  {
+    id: 19,
+    pages: [
+      {
+        content: ["Oh No!", "", "Aldi has come out with a perfume Dupe! Please pivot and create a new lidl perfume dupe to go viral."],
       },
       {
         content: outcomeContent,
