@@ -54,7 +54,7 @@ export function BriefView({ brief, onReadyToStart, showHeader = false, onClose }
       {/* Mini header - shown when viewing brief during active timer */}
       {showHeader && (
         <>
-          <div className="absolute inset-[10.06%_83.96%_85.06%_7.5%]">
+          <div className="absolute left-[108px] top-[10.06%] bottom-[85.06%] right-[83.96%]">
             <div className="absolute inset-0 rounded-[100px]">
               <div aria-hidden="true" className="absolute border-2 border-[#0000d5] border-solid inset-[-1px] pointer-events-none rounded-[101px]" />
             </div>
